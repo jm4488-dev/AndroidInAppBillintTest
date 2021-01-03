@@ -5,17 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.billingclient.api.*
+import com.jm4488.billingtest.GlobalApplication
 import com.jm4488.billingtest.R
 import com.jm4488.billingtest.adapter.BillingPurchaseAdapter
 import com.jm4488.billingtest.data.BillingProductItem
+import com.jm4488.billingtest.data.Constants
 import com.jm4488.billingtest.databinding.ActivityBillingPurchaseBinding
 import com.jm4488.billingtest.utils.GoogleBillingUtils
 
 class BillingPurchaseActivity : AppCompatActivity() {
-    private lateinit var billingClient: BillingClient
+    private lateinit var billingUtils: GoogleBillingUtils
 
     private lateinit var binding: ActivityBillingPurchaseBinding
     private lateinit var purchaseAdapter: BillingPurchaseAdapter
@@ -23,14 +26,28 @@ class BillingPurchaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_billing_purchase)
+    }
+
+    override fun onResume() {
+        super.onResume()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_billing_purchase)
 
+        billingUtils = (application as GlobalApplication).googleBillingUtils
+//        lifecycle.addObserver(billingUtils)
+
         init()
-        setupBillingClient()
+
+        billingUtils.productSkuDetailsLiveData.observe(this, Observer {
+            makeList(it)
+        })
+
+        binding.pbLoading.visibility = View.VISIBLE
+        billingUtils.querySkuDetails(BillingClient.SkuType.INAPP, Constants.INAPP_PRODUCT_IDS)
     }
 
     private fun init() {
         purchaseAdapter = BillingPurchaseAdapter(this)
+        purchaseAdapter.setBillingUtils(billingUtils)
         binding.rvList.layoutManager = LinearLayoutManager(this)
         binding.rvList.itemAnimator?.let {
             when (it) {
@@ -40,73 +57,16 @@ class BillingPurchaseActivity : AppCompatActivity() {
         binding.rvList.adapter = purchaseAdapter
 
         binding.btnLoadPurchases.setOnClickListener {
-            if (billingClient.isReady) {
-                loadPurchaseItems()
-            }
+            billingUtils.querySkuDetails(BillingClient.SkuType.INAPP, Constants.INAPP_PRODUCT_IDS)
         }
     }
 
-    private fun setupBillingClient() {
-        billingClient = GoogleBillingUtils.getInstance(this, perchaseListener)
-        purchaseAdapter.settingBillingClient(billingClient)
-
-        billingClient.startConnection(object: BillingClientStateListener {
-            override fun onBillingSetupFinished(p0: BillingResult) {
-                Log.e("[TEST]", "=== onBillingSetupFinished ===")
-                if (p0.responseCode == BillingClient.BillingResponseCode.OK) {
-                    Log.e("[TEST]", "success to connect billing OK")
-
-                    loadPurchaseItems()
-
-                    val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
-                    if ((purchases?.size ?: 0) > 0) {
-                        // already has subs
-                        Log.e("[TEST]", "Already has subscriptions : ${purchases?.size ?: 0}")
-                    } else {
-                        // no subs
-//                        loadPurchaseItems()
-                    }
-                } else {
-                    Log.e("[TEST]", "() Error code : ${p0.responseCode}")
-                }
-            }
-
-            override fun onBillingServiceDisconnected() {
-                Log.e("[TEST]", "=== onBillingServiceDisconnected ===")
-                Log.e("[TEST]", "Disconnected From Billing Service")
-            }
-
-        })
-    }
-
-    private fun loadPurchaseItems() {
-        Log.e("[TEST]", "=== loadSubscriptionItems ===")
-        binding.pbLoading.visibility = View.VISIBLE
-        if (billingClient.isReady) {
-            val params = SkuDetailsParams.newBuilder()
-                .setSkusList(listOf("test_001"))
-                .setType(BillingClient.SkuType.INAPP)
-                .build()
-
-            billingClient.querySkuDetailsAsync(params) { response, list ->
-                if (response.responseCode == BillingClient.BillingResponseCode.OK) {
-                    list?.let {
-                        Log.e("[TEST]", "available purchase item count : ${list.size}")
-                        makeList(list)
-                    }
-                } else {
-                    Log.e("[TEST]", "querySkuDetailsAsync error : ${response.responseCode}")
-                }
-                binding.pbLoading.visibility = View.GONE
-            }
-        }
-    }
-
-    private fun makeList(list: MutableList<SkuDetails>) {
-        Log.e("[TEST]", "=== makeList ===")
+    private fun makeList(list: List<SkuDetails>) {
+        Log.e("[INAPPACT]", "=== makeList ===")
+        binding.pbLoading.visibility = View.GONE
         val productList = arrayListOf<BillingProductItem>()
         for (item in list) {
-            Log.e("[TEST]", "subs Item : ${item.toString()}")
+            Log.e("[INAPPACT]", "subs Item : ${item.toString()}")
             productList.add(BillingProductItem(item))
         }
         purchaseAdapter.items = productList
@@ -115,13 +75,8 @@ class BillingPurchaseActivity : AppCompatActivity() {
 
     private val billingListener = ConsumeResponseListener { billingResult, s ->
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-            Log.e("[TEST]", "=== ConsumeResponseListener ===")
-            Log.e("[TEST]", "Consume OK")
+            Log.e("[INAPPACT]", "=== ConsumeResponseListener ===")
+            Log.e("[INAPPACT]", "Consume OK")
         }
-    }
-
-    private val perchaseListener = PurchasesUpdatedListener { billingResult, mutableList ->
-        Log.e("[TEST]", "=== onPurchasesUpdated ===")
-        Log.e("[TEST]", "")
     }
 }

@@ -29,6 +29,10 @@ class Constants {
                 = "https://play.google.com/store/account/subscriptions"
         const val PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL
                 = "https://play.google.com/store/account/subscriptions?sku=%s&package=%s"
+
+
+        val INAPP_PRODUCT_IDS = listOf("test_001", "test_002")
+        val SUBS_PRODUCT_IDS = listOf("test_sub_001", "test_sub_002")
     }
 
 }

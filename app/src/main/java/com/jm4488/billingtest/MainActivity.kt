@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -19,7 +20,7 @@ import com.jm4488.billingtest.utils.GoogleBillingUtils
 import com.jm4488.billingtest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var billingClient: BillingClient
+    private lateinit var billingUtils: GoogleBillingUtils
     private lateinit var billingViewModel: BillingViewModel
 
     private lateinit var binding: ActivityMainBinding
@@ -28,21 +29,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
 
-//        binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
-
+    override fun onResume() {
+        super.onResume()
+        //        binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
         billingViewModel = ViewModelProviders.of(this).get(BillingViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        setupBillingClient()
+        billingUtils = (application as GlobalApplication).googleBillingUtils
+//        lifecycle.addObserver(billingUtils)
+
         init()
+
+        billingUtils.alreadyPurchasedLiveData.observe(this, Observer { purchases ->
+            purchases?.let { list ->
+                val purchasedItemList = list.map { PurchasedItem(it) }
+                makeAlreadyPurchasedList(ArrayList(purchasedItemList))
+            }
+        })
+        billingUtils.queryAlreadyPurchases()
     }
 
     private fun init() {
         binding.vm = billingViewModel
 
-        purchasedAdapter = PurchasedItemAdapter(this)
-        purchasedAdapter.settingBillingClient(billingClient)
+        purchasedAdapter = PurchasedItemAdapter()
 
         binding.rvProductList.layoutManager = LinearLayoutManager(this)
         binding.rvProductList.itemAnimator?.let {
@@ -53,11 +65,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvProductList.adapter = purchasedAdapter
 
         binding.btnAlreadyPurchasedList.setOnClickListener {
-            Log.e("[TEST]", "=== btn_load_product Click ===")
-            if (billingClient.isReady) {
-                Log.e("[TEST]", "client ready : ${billingClient.isReady}")
-                makeAlreadyPurchasedList()
-            }
+            Log.e("[MAINACT]", "=== btn_load_product Click ===")
+            billingUtils.queryAlreadyPurchases()
         }
 
         binding.btnGoPurchaseProduct.setOnClickListener {
@@ -69,83 +78,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupBillingClient() {
-        billingClient = GoogleBillingUtils.getInstance(this, purchaseListener)
-        billingClient.startConnection(object: BillingClientStateListener {
-            override fun onBillingSetupFinished(p0: BillingResult) {
-                Log.e("[TEST]", "=== onBillingSetupFinished ===")
-                if (p0.responseCode == BillingClient.BillingResponseCode.OK) {
-                    Log.e("[TEST]", "success to connect billing OK")
-                    makeAlreadyPurchasedList()
-                } else {
-                    Log.e("[TEST]", "() Error code : ${p0.responseCode}")
-                }
-            }
-
-            override fun onBillingServiceDisconnected() {
-                Log.e("[TEST]", "=== onBillingServiceDisconnected ===")
-                Log.e("[TEST]", "Disconnected From Billing Service")
-            }
-        })
-    }
-
-    private fun makeAlreadyPurchasedList() {
-        Log.e("[TEST]", "=== makeAlreadyPurchasedList ===")
+    private fun makeAlreadyPurchasedList(purchasedItems: ArrayList<PurchasedItem>) {
+        Log.e("[MAINACT]", "=== makeAlreadyPurchasedList ===")
         binding.pbLoading.visibility = View.VISIBLE
         purchasedAdapter.items.clear()
-
-        billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList?.let {
-            Log.e("[TEST]", "INAPP items size : ${it.size}")
-            for (item in it) {
-                Log.e("[TEST]", "INAPP item : ${item.toString()}")
-                purchasedAdapter.items.add(PurchasedItem(item))
-            }
-        }
-
-        billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList?.let {
-            Log.e("[TEST]", "SUBS items size : ${it.size}")
-            for (item in it) {
-                Log.e("[TEST]", "SUBS item : ${item.toString()}")
-
-                purchasedAdapter.items.add(PurchasedItem(item))
-            }
-        }
+        purchasedAdapter.items = purchasedItems
         binding.pbLoading.visibility = View.GONE
         purchasedAdapter.notifyDataSetChanged()
     }
 
-    private fun handleAlreadyPurchasedItem(item: Purchase) {
-        if (item.purchaseState == Purchase.PurchaseState.PURCHASED) {
-            if (!item.isAcknowledged) {
-                val params = AcknowledgePurchaseParams.newBuilder()
-                    .setPurchaseToken(item.purchaseToken)
-                    .build()
-
-                billingClient.acknowledgePurchase(params, acknowledgePurchaseResponseListener)
-            } else {
-
-            }
-        }
-    }
+//    private fun handleAlreadyPurchasedItem(item: Purchase) {
+//        if (item.purchaseState == Purchase.PurchaseState.PURCHASED) {
+//            if (!item.isAcknowledged) {
+//                val params = AcknowledgePurchaseParams.newBuilder()
+//                    .setPurchaseToken(item.purchaseToken)
+//                    .build()
+//
+//                billingUtils..acknowledgePurchase(params, acknowledgePurchaseResponseListener)
+//            } else {
+//
+//            }
+//        }
+//    }
 
     private val acknowledgePurchaseResponseListener = AcknowledgePurchaseResponseListener { result ->
-        Log.e("[TEST]", "=== acknowledgePurchaseResponseListener ===")
+        Log.e("[MAINACT]", "=== acknowledgePurchaseResponseListener ===")
         if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-            Log.e("[TEST]", "RESPONSE OK")
+            Log.e("[MAINACT]", "RESPONSE OK")
         }
     }
-
-    private val purchaseListener = PurchasesUpdatedListener { billingResult, mutableList ->
-        Log.e("[TEST]", "=== onPurchasesUpdated ===")
-        if (billingClient.isReady && billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-            mutableList?.let {
-                for (item in it) {
-                    purchasedAdapter.items.add(PurchasedItem(item))
-                }
-            }
-        } else {
-            Log.e("[TEST]", "PurchasesUpdatedListener Error code : ${billingResult.responseCode}")
-        }
-    }
-
 }

@@ -24,21 +24,21 @@ class GoogleBillingUtilsDev private constructor(
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        Log.d(TAG, "onPurchasesUpdated: $responseCode $debugMessage")
+        Log.e(TAG, "onPurchasesUpdated: $responseCode $debugMessage")
         when (responseCode) {
             BillingClient.BillingResponseCode.OK -> {
                 if (purchases == null) {
-                    Log.d(TAG, "onPurchasesUpdated: null purchase list")
+                    Log.e(TAG, "onPurchasesUpdated: null purchase list")
                     processPurchases(null)
                 } else {
                     processPurchases(purchases)
                 }
             }
             BillingClient.BillingResponseCode.USER_CANCELED -> {
-                Log.i(TAG, "onPurchasesUpdated: User canceled the purchase")
+                Log.e(TAG, "onPurchasesUpdated: User canceled the purchase")
             }
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
-                Log.i(TAG, "onPurchasesUpdated: The user already owns this item")
+                Log.e(TAG, "onPurchasesUpdated: The user already owns this item")
             }
             BillingClient.BillingResponseCode.DEVELOPER_ERROR -> {
                 Log.e(TAG, "onPurchasesUpdated: Developer error means that Google Play " +
@@ -54,16 +54,16 @@ class GoogleBillingUtilsDev private constructor(
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        Log.d(TAG, "onBillingSetupFinished: $responseCode $debugMessage")
+        Log.e(TAG, "onBillingSetupFinished: $responseCode $debugMessage")
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             // The billing client is ready. You can query purchases here.
-            querySkuDetails()
+//            querySkuDetails()
             queryPurchases()
         }
     }
 
     override fun onBillingServiceDisconnected() {
-        Log.d(TAG, "onBillingServiceDisconnected")
+        Log.e(TAG, "onBillingServiceDisconnected")
         // TODO: Try connecting again with exponential backoff.
         // billingClient.startConnection(this)
     }
@@ -73,9 +73,9 @@ class GoogleBillingUtilsDev private constructor(
         val debugMessage = billingResult.debugMessage
         when (responseCode) {
             BillingClient.BillingResponseCode.OK -> {
-                Log.i(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
                 if (skuDetailsList == null) {
-                    Log.w(TAG, "onSkuDetailsResponse: null SkuDetails list")
+                    Log.e(TAG, "onSkuDetailsResponse: null SkuDetails list")
                     skusWithSkuDetails.postValue(emptyMap())
                 } else
                     skusWithSkuDetails.postValue(HashMap<String, SkuDetails>().apply {
@@ -83,7 +83,7 @@ class GoogleBillingUtilsDev private constructor(
                             put(details.sku, details)
                         }
                     }.also { postedValue ->
-                        Log.i(TAG, "onSkuDetailsResponse: count ${postedValue.size}")
+                        Log.e(TAG, "onSkuDetailsResponse: count ${postedValue.size}")
                     })
             }
             BillingClient.BillingResponseCode.SERVICE_DISCONNECTED,
@@ -99,13 +99,13 @@ class GoogleBillingUtilsDev private constructor(
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
             BillingClient.BillingResponseCode.ITEM_NOT_OWNED -> {
                 // These response codes are not expected.
-                Log.wtf(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
             }
         }
     }
 
     fun querySkuDetails() {
-        Log.d(TAG, "querySkuDetails")
+        Log.e(TAG, "querySkuDetails")
         val params = SkuDetailsParams.newBuilder()
                 .setType(BillingClient.SkuType.SUBS)
                 .setSkusList(listOf(
@@ -114,23 +114,23 @@ class GoogleBillingUtilsDev private constructor(
                 ))
                 .build()
         params?.let { skuDetailsParams ->
-            Log.i(TAG, "querySkuDetailsAsync")
+            Log.e(TAG, "querySkuDetailsAsync")
             billingClient.querySkuDetailsAsync(skuDetailsParams, this)
         }
     }
 
     fun queryPurchases() {
-        if (!billingClient.isReady) {
+        if (!checkBillingClient()) {
             Log.e(TAG, "queryPurchases: BillingClient is not ready")
         }
-        Log.d(TAG, "queryPurchases: SUBS")
+        Log.e(TAG, "queryPurchases: SUBS")
         val result = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
         if (result == null) {
-            Log.i(TAG, "queryPurchases: null purchase result")
+            Log.e(TAG, "queryPurchases: null purchase result")
             processPurchases(null)
         } else {
             if (result.purchasesList == null) {
-                Log.i(TAG, "queryPurchases: null purchase list")
+                Log.e(TAG, "queryPurchases: null purchase list")
                 processPurchases(null)
             } else {
                 processPurchases(result.purchasesList)
@@ -139,9 +139,9 @@ class GoogleBillingUtilsDev private constructor(
     }
 
     private fun processPurchases(purchasesList: List<Purchase>?) {
-        Log.d(TAG, "processPurchases: ${purchasesList?.size} purchase(s)")
+        Log.e(TAG, "processPurchases: ${purchasesList?.size} purchase(s)")
         if (isUnchangedPurchaseList(purchasesList)) {
-            Log.d(TAG, "processPurchases: Purchase list has not changed")
+            Log.e(TAG, "processPurchases: Purchase list has not changed")
             return
         }
         purchaseUpdateEvent.postValue(purchasesList)
@@ -154,14 +154,14 @@ class GoogleBillingUtilsDev private constructor(
     fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int {
         val sku = params.sku
         val oldSku = params.oldSku
-        Log.i(TAG, "launchBillingFlow: sku: $sku, oldSku: $oldSku")
-        if (!billingClient.isReady) {
+        Log.e(TAG, "launchBillingFlow: sku: $sku, oldSku: $oldSku")
+        if (!checkBillingClient()) {
             Log.e(TAG, "launchBillingFlow: BillingClient is not ready")
         }
         val billingResult = billingClient.launchBillingFlow(activity, params)
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        Log.d(TAG, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
+        Log.e(TAG, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
         return responseCode
     }
 
@@ -180,12 +180,12 @@ class GoogleBillingUtilsDev private constructor(
                 ack_no++
             }
         }
-        Log.d(TAG, "logAcknowledgementStatus: acknowledged=$ack_yes unacknowledged=$ack_no")
+        Log.e(TAG, "logAcknowledgementStatus: acknowledged=$ack_yes unacknowledged=$ack_no")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun create() {
-        Log.d(TAG, "ON_CREATE")
+        Log.e(TAG, "ON_CREATE")
         // Create a new BillingClient in onCreate().
         // Since the BillingClient can only be used once, we need to create a new instance
         // after ending the previous connection to the Google Play Store in onDestroy().
@@ -193,21 +193,36 @@ class GoogleBillingUtilsDev private constructor(
                 .setListener(this)
                 .enablePendingPurchases() // Not used for subscriptions.
                 .build()
-        if (!billingClient.isReady) {
-            Log.d(TAG, "BillingClient: Start connection...")
+        if (!checkBillingClient()) {
+            Log.e(TAG, "BillingClient: Start connection...")
             billingClient.startConnection(this)
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun destroy() {
-        Log.d(TAG, "ON_DESTROY")
-        if (billingClient.isReady) {
-            Log.d(TAG, "BillingClient can only be used once -- closing connection")
+        Log.e(TAG, "ON_DESTROY")
+        if (checkBillingClient()) {
+            Log.e(TAG, "BillingClient can only be used once -- closing connection")
             // BillingClient can only be used once.
             // After calling endConnection(), we must create a new BillingClient.
             billingClient.endConnection()
         }
+    }
+
+    fun checkBillingClient(): Boolean {
+        if (billingClient == null) {
+            Log.e(TAG, "BillingClient is null")
+        } else {
+            return if (billingClient.isReady) {
+                Log.e(TAG, "BillingClient is ready")
+                true
+            } else {
+                Log.e(TAG, "BillingClient is not ready")
+                false
+            }
+        }
+        return false
     }
 
     companion object {
