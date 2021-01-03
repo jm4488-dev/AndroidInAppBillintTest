@@ -32,7 +32,7 @@ class BillingSubscribeAdapter(activity: Activity) : RecyclerView.Adapter<Billing
     override fun onBindViewHolder(holder: BillingItemViewHolder, position: Int) {
         holder.onBind(items[position])
         holder.itemView.btn_buy.setOnClickListener {
-            items[position]?.let {
+            items[position].let {
                 Log.e("[SUBSADAP]", "skuDetailsItem desc : ${it.toString()}")
 
                 val billingFlowParams = BillingFlowParams.newBuilder()

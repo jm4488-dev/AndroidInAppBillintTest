@@ -212,18 +212,13 @@ class GoogleBillingUtilsDev private constructor(
     }
 
     fun checkBillingClient(): Boolean {
-        if (billingClient == null) {
-            Log.e(TAG, "BillingClient is null")
+        return if (billingClient.isReady) {
+            Log.e(TAG, "BillingClient is ready")
+            true
         } else {
-            return if (billingClient.isReady) {
-                Log.e(TAG, "BillingClient is ready")
-                true
-            } else {
-                Log.e(TAG, "BillingClient is not ready")
-                false
-            }
+            Log.e(TAG, "BillingClient is not ready")
+            false
         }
-        return false
     }
 
     companion object {

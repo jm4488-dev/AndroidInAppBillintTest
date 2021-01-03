@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         billingUtils.alreadyPurchasedLiveData.observe(this, Observer { purchases ->
             purchases?.let { list ->
-                makeAlreadyPurchasedList(purchases)
+                makeAlreadyPurchasedList(list)
             }
         })
 
