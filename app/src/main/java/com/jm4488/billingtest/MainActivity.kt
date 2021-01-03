@@ -15,7 +15,6 @@ import com.jm4488.billingtest.activity.BillingPurchaseActivity
 import com.jm4488.billingtest.activity.BillingSubscribeActivity
 import com.jm4488.billingtest.adapter.PurchasedItemAdapter
 import com.jm4488.billingtest.billing.BillingViewModel
-import com.jm4488.billingtest.data.PurchasedItem
 import com.jm4488.billingtest.utils.GoogleBillingUtils
 import com.jm4488.billingtest.databinding.ActivityMainBinding
 
@@ -33,10 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //        binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
         billingViewModel = ViewModelProviders.of(this).get(BillingViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         billingUtils = (application as GlobalApplication).googleBillingUtils
 //        lifecycle.addObserver(billingUtils)
 
@@ -44,8 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         billingUtils.alreadyPurchasedLiveData.observe(this, Observer { purchases ->
             purchases?.let { list ->
-                val purchasedItemList = list.map { PurchasedItem(it) }
-                makeAlreadyPurchasedList(ArrayList(purchasedItemList))
+                makeAlreadyPurchasedList(purchases)
             }
         })
         billingUtils.queryAlreadyPurchases()
@@ -78,11 +74,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun makeAlreadyPurchasedList(purchasedItems: ArrayList<PurchasedItem>) {
+    private fun makeAlreadyPurchasedList(purchasedItems: List<Purchase>) {
         Log.e("[MAINACT]", "=== makeAlreadyPurchasedList ===")
         binding.pbLoading.visibility = View.VISIBLE
         purchasedAdapter.items.clear()
-        purchasedAdapter.items = purchasedItems
+        purchasedAdapter.items = ArrayList(purchasedItems)
         binding.pbLoading.visibility = View.GONE
         purchasedAdapter.notifyDataSetChanged()
     }

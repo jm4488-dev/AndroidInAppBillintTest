@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
-import com.jm4488.billingtest.GlobalApplication
-import com.jm4488.billingtest.data.BillingProductItem
+import com.android.billingclient.api.SkuDetails
 import com.jm4488.billingtest.databinding.ItemBillingProductBinding
 import com.jm4488.billingtest.utils.GoogleBillingUtils
 import kotlinx.android.synthetic.main.item_billing_product.view.*
 
 class BillingSubscribeAdapter(activity: Activity) : RecyclerView.Adapter<BillingItemViewHolder>() {
-    var items = arrayListOf<BillingProductItem>()
+    var items = arrayListOf<SkuDetails>()
     private lateinit var billingUtils: GoogleBillingUtils
     var activity = activity
 
@@ -33,7 +32,7 @@ class BillingSubscribeAdapter(activity: Activity) : RecyclerView.Adapter<Billing
     override fun onBindViewHolder(holder: BillingItemViewHolder, position: Int) {
         holder.onBind(items[position])
         holder.itemView.btn_buy.setOnClickListener {
-            items[position].skuDetailsItem?.let {
+            items[position]?.let {
                 Log.e("[SUBSADAP]", "skuDetailsItem desc : ${it.toString()}")
 
                 val billingFlowParams = BillingFlowParams.newBuilder()

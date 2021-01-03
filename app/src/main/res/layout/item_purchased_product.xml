@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.jm4488.billingtest.data.PurchasedItem" />
+            type="com.android.billingclient.api.Purchase" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@{String.format(`orderId : %s`, data.purchaseItem.orderId)}"
+            android:text="@{String.format(`orderId : %s`, data.orderId)}"
             tools:text="orderId : orderId"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@{String.format(`purchaseToken : %s`, data.purchaseItem.purchaseToken)}"
+            android:text="@{String.format(`purchaseToken : %s`, data.purchaseToken)}"
             tools:text="purchaseToken : purchaseToken"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_orderid"
@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@{String.format(`description : %s`, data.purchaseItem.toString())}"
+            android:text="@{String.format(`description : %s`, data.toString())}"
             tools:text="description : description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_token"

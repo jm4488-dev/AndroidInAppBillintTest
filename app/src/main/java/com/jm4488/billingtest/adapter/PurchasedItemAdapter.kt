@@ -4,12 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jm4488.billingtest.data.PurchasedItem
+import com.android.billingclient.api.Purchase
 import com.jm4488.billingtest.databinding.ItemPurchasedProductBinding
 import kotlinx.android.synthetic.main.item_purchased_product.view.*
 
 class PurchasedItemAdapter() : RecyclerView.Adapter<BillingItemViewHolder>() {
-    var items = arrayListOf<PurchasedItem>()
+    var items = arrayListOf<Purchase>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BillingItemViewHolder {
         return BillingItemViewHolder.PurchasedViewHolder(ItemPurchasedProductBinding.inflate(LayoutInflater.from(parent.context), parent, false))

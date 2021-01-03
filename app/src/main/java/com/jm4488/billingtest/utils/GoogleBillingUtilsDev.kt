@@ -20,7 +20,6 @@ class GoogleBillingUtilsDev private constructor(
     val purchases = MutableLiveData<List<Purchase>>()
     val skusWithSkuDetails = MutableLiveData<Map<String, SkuDetails>>()
 
-
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage

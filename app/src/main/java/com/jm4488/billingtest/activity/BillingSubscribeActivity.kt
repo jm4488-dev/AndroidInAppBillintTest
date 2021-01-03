@@ -12,7 +12,6 @@ import com.android.billingclient.api.*
 import com.jm4488.billingtest.GlobalApplication
 import com.jm4488.billingtest.R
 import com.jm4488.billingtest.adapter.BillingSubscribeAdapter
-import com.jm4488.billingtest.data.BillingProductItem
 import com.jm4488.billingtest.data.Constants
 import com.jm4488.billingtest.databinding.ActivityBillingSubscribeBinding
 import com.jm4488.billingtest.utils.GoogleBillingUtils
@@ -31,7 +30,6 @@ class BillingSubscribeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_billing_subscribe)
-
         billingUtils = (application as GlobalApplication).googleBillingUtils
 //        lifecycle.addObserver(billingUtils)
 
@@ -64,12 +62,7 @@ class BillingSubscribeActivity : AppCompatActivity() {
     private fun makeList(list: List<SkuDetails>) {
         Log.e("[SUBSACT]", "=== makeList ===")
         binding.pbLoading.visibility = View.GONE
-        val productList = arrayListOf<BillingProductItem>()
-        for (item in list) {
-            Log.e("[SUBSACT]", "subs Item : ${item.toString()}")
-            productList.add(BillingProductItem(item))
-        }
-        subscribeAdapter.items = productList
+        subscribeAdapter.items = ArrayList(list)
         subscribeAdapter.notifyDataSetChanged()
     }
 

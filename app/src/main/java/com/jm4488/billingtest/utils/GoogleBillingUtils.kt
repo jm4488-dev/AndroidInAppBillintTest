@@ -160,17 +160,17 @@ class GoogleBillingUtils  private constructor(
             Log.e(TAG, "item type : ${item.sku}")
             when (item.sku) {
                 in Constants.INAPP_PRODUCT_IDS -> {
-                    consumePurchasePurchaseItem(item)
+//                    consumePurchasePurchaseItem(item)
                 }
                 in Constants.SUBS_PRODUCT_IDS -> {
-                    acknowledgePurchasePurchaseItem(item)
+//                    acknowledgePurchasePurchaseItem(item)
                 }
                 else -> {}
             }
         }
     }
 
-    // 비소비성 상품 - 중복구매 불가
+    // 비소비성 상품 청구 확인(구매확정) - 중복구매 불가
     fun acknowledgePurchasePurchaseItem(item: Purchase) {
         Log.e(TAG, "acknowledgePurchasePurchaseItem / ${item.purchaseToken}")
         val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
@@ -183,7 +183,7 @@ class GoogleBillingUtils  private constructor(
         }
     }
 
-    // 소비성 상품 - 중복구매 가능
+    // 소비성 상품 청구 확인(구매확정) - 중복구매 가능
     fun consumePurchasePurchaseItem(item: Purchase) {
         Log.e(TAG, "consumePurchasePurchaseItem / ${item.purchaseToken}")
         val consumeParams = ConsumeParams.newBuilder()
@@ -198,32 +198,4 @@ class GoogleBillingUtils  private constructor(
             }
         }
     }
-
-//
-//    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-//    fun create() {
-//        Log.e(TAG, "ON_CREATE")
-//        // Create a new BillingClient in onCreate().
-//        // Since the BillingClient can only be used once, we need to create a new instance
-//        // after ending the previous connection to the Google Play Store in onDestroy().
-//        billingClient = BillingClient.newBuilder(app.applicationContext)
-//                .setListener(this)
-//                .enablePendingPurchases() // Not used for subscriptions.
-//                .build()
-//        if (!checkBillingClient()) {
-//            Log.e(TAG, "BillingClient: Start connection...")
-//            billingClient.startConnection(this)
-//        }
-//    }
-//
-//    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-//    fun destroy() {
-//        Log.e(TAG, "ON_DESTROY")
-//        if (checkBillingClient()) {
-//            Log.e(TAG, "BillingClient can only be used once -- closing connection")
-//            // BillingClient can only be used once.
-//            // After calling endConnection(), we must create a new BillingClient.
-//            billingClient.endConnection()
-//        }
-//    }
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.jm4488.billingtest.data.BillingProductItem" />
+            type="com.android.billingclient.api.SkuDetails" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
-            android:text="@{data.skuDetailsItem.title}"
+            android:text="@{data.title}"
             tools:text="tv_item_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
-            android:text="@{data.skuDetailsItem.type}"
+            android:text="@{data.type}"
             tools:text="tv_item_type"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_name"/>
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
-            android:text="@{data.skuDetailsItem.price}"
+            android:text="@{data.price}"
             tools:text="tv_item_price"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_type"/>
