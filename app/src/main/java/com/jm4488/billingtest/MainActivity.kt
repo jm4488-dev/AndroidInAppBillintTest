@@ -3,6 +3,7 @@ package com.jm4488.billingtest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -44,13 +45,18 @@ class MainActivity : AppCompatActivity() {
                 makeAlreadyPurchasedList(purchases)
             }
         })
-        billingUtils.queryAlreadyPurchases()
+
+        binding.pbLoading.visibility = View.VISIBLE
+        Handler().postDelayed({
+            billingUtils.queryAlreadyPurchases()
+        }, 1000)
     }
 
     private fun init() {
         binding.vm = billingViewModel
 
         purchasedAdapter = PurchasedItemAdapter()
+        purchasedAdapter.setUtil(billingUtils)
 
         binding.rvProductList.layoutManager = LinearLayoutManager(this)
         binding.rvProductList.itemAnimator?.let {
@@ -79,31 +85,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeAlreadyPurchasedList(purchasedItems: List<Purchase>) {
         Log.e("[MAINACT]", "=== makeAlreadyPurchasedList ===")
-        binding.pbLoading.visibility = View.VISIBLE
+        binding.pbLoading.visibility = View.GONE
         purchasedAdapter.items.clear()
         purchasedAdapter.items = ArrayList(purchasedItems)
-        binding.pbLoading.visibility = View.GONE
+//        purchasedAdapter.items = ArrayList(emptyList())
         purchasedAdapter.notifyDataSetChanged()
-    }
-
-//    private fun handleAlreadyPurchasedItem(item: Purchase) {
-//        if (item.purchaseState == Purchase.PurchaseState.PURCHASED) {
-//            if (!item.isAcknowledged) {
-//                val params = AcknowledgePurchaseParams.newBuilder()
-//                    .setPurchaseToken(item.purchaseToken)
-//                    .build()
-//
-//                billingUtils..acknowledgePurchase(params, acknowledgePurchaseResponseListener)
-//            } else {
-//
-//            }
-//        }
-//    }
-
-    private val acknowledgePurchaseResponseListener = AcknowledgePurchaseResponseListener { result ->
-        Log.e("[MAINACT]", "=== acknowledgePurchaseResponseListener ===")
-        if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-            Log.e("[MAINACT]", "RESPONSE OK")
-        }
     }
 }

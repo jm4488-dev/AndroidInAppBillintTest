@@ -22,7 +22,7 @@
             tools:text="orderId : orderId"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_refund"/>
+            app:layout_constraintEnd_toStartOf="@+id/btn_confirm"/>
 
         <TextView
             android:id="@+id/tv_item_token"
@@ -33,7 +33,7 @@
             tools:text="purchaseToken : purchaseToken"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_orderid"
-            app:layout_constraintEnd_toStartOf="@+id/btn_refund"/>
+            app:layout_constraintEnd_toStartOf="@+id/btn_confirm"/>
 
         <TextView
             android:id="@+id/tv_item_description"
@@ -44,14 +44,15 @@
             tools:text="description : description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_token"
-            app:layout_constraintEnd_toStartOf="@+id/btn_refund"/>
+            app:layout_constraintEnd_toStartOf="@+id/btn_confirm"/>
 
         <Button
-            android:id="@+id/btn_refund"
+            android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="REFUND"
+            android:text="CONFIRM"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/view_divider" />

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.android.billingclient.api.*
 import com.jm4488.billingtest.data.Constants
+import org.json.JSONObject
 import java.util.*
 
 class GoogleBillingUtils  private constructor(
@@ -117,7 +118,7 @@ class GoogleBillingUtils  private constructor(
             mutableList?.let {
                 Log.e(TAG, "mutableList size : ${it.size}")
                 purchaseUpdateLiveData.postValue(mutableList)
-                handlePurchaseItem(mutableList)
+//                handlePurchaseItems(mutableList)
             } ?: purchaseUpdateLiveData.postValue(emptyList())
         } else {
             purchaseUpdateLiveData.postValue(emptyList())
@@ -131,12 +132,17 @@ class GoogleBillingUtils  private constructor(
         Log.e(TAG, "queryPurchases: INAPP")
         val purchasedItems = arrayListOf<Purchase>()
         billingClient.queryPurchases(BillingClient.SkuType.INAPP)?.purchasesList?.let {
+            for (item in it) {
+                Log.e(TAG, "INAPP item purchaseState : ${item.purchaseState}")
+            }
             purchasedItems.addAll(it)
         }
-        Log.e(TAG, "purchasedItems: ${purchasedItems.toString()}")
 
         Log.e(TAG, "queryPurchases: SUBS")
         billingClient.queryPurchases(BillingClient.SkuType.SUBS)?.purchasesList?.let {
+            for (item in it) {
+                Log.e(TAG, "SUBS item purchaseState : ${item.purchaseState}")
+            }
             purchasedItems.addAll(it)
         }
         Log.e(TAG, "purchasedItems: ${purchasedItems.toString()}")
@@ -172,22 +178,62 @@ class GoogleBillingUtils  private constructor(
         return responseCode
     }
 
-    fun handlePurchaseItem(items: List<Purchase>) {
+    fun handlePurchaseItems(items: List<Purchase>) {
         if (!checkBillingClient()) {
             return
         }
         Log.e(TAG, "handlePurchaseItem items: ${items.size}")
         for (item in items) {
             Log.e(TAG, "item type : ${item.sku}")
-            when (item.sku) {
-                in Constants.INAPP_PRODUCT_IDS -> {
-//                    consumePurchasePurchaseItem(item)
-                }
-                in Constants.SUBS_PRODUCT_IDS -> {
-//                    acknowledgePurchasePurchaseItem(item)
-                }
-                else -> {}
+            doConsumeOrAcknowledgePurchaseItem(item)
+        }
+    }
+
+    /**
+     * PENDING 체크
+     * 문제점 있음
+     * 1. 구매(launchBillingFlow) 진행 후 consume OR acknowledge 하지 않은 상태에서 상태 확인 시.
+     *   - item.purchaseState = 1
+     *   - item.originalJson.purchaseState = 0
+     *   왜 다른가? 환불 관련이라는 글을 봤지만 아직 정확히 이해 못함...
+     */
+    fun isPurchasePending(item: Purchase): Boolean {
+        val purchaseJsonObject = JSONObject(item.originalJson)
+        val purchaseStateInJson = purchaseJsonObject.getInt("purchaseState")
+
+        Log.e(TAG, "isPurchasePending purchaseState : ${item.purchaseState}")
+        Log.e(TAG, "isPurchasePending isAcknowledged : ${item.isAcknowledged}")
+        Log.e(TAG, "isPurchasePending isAutoRenewing : ${item.isAutoRenewing}")
+        Log.e(TAG, "isPurchasePending originalJson : ${purchaseJsonObject.toString(4)}")
+        Log.e(TAG, "isPurchasePending states / UNSPECIFIED_STATE: ${Purchase.PurchaseState.UNSPECIFIED_STATE} / PURCHASED: ${Purchase.PurchaseState.PURCHASED} / PENDING: ${Purchase.PurchaseState.PENDING}")
+        Log.e(TAG, "isPurchasePending purchaseStateInJson : $purchaseStateInJson")
+        Log.e(TAG, "isPurchasePending test : ${purchaseStateInJson == Purchase.PurchaseState.PURCHASED}")
+        Log.e(TAG, "=====================================================")
+
+        return if (item.isAcknowledged) {
+            false
+        } else purchaseStateInJson != Purchase.PurchaseState.PURCHASED
+//
+//        return if (!item.isAcknowledged && item.purchaseState == Purchase.PurchaseState.PENDING) {
+//            true
+//        } else if (item.isAcknowledged) {
+//            false
+//        } else if (item.purchaseState == Purchase.PurchaseState.PURCHASED) {
+//            false
+//        } else {
+//            false
+//        }
+    }
+
+    fun doConsumeOrAcknowledgePurchaseItem(item: Purchase) {
+        when (item.sku) {
+            in Constants.INAPP_PRODUCT_IDS -> {
+                    consumePurchasePurchaseItem(item)
             }
+            in Constants.SUBS_PRODUCT_IDS -> {
+                    acknowledgePurchasePurchaseItem(item)
+            }
+            else -> {}
         }
     }
 

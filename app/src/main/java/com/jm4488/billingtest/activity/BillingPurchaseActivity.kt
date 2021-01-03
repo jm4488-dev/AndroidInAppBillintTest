@@ -2,6 +2,7 @@ package com.jm4488.billingtest.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -40,7 +41,9 @@ class BillingPurchaseActivity : AppCompatActivity() {
         })
 
         binding.pbLoading.visibility = View.VISIBLE
-        billingUtils.querySkuDetails(BillingClient.SkuType.INAPP, Constants.INAPP_PRODUCT_IDS)
+        Handler().postDelayed({
+            billingUtils.querySkuDetails(BillingClient.SkuType.INAPP, Constants.INAPP_PRODUCT_IDS)
+        }, 1000)
     }
 
     private fun init() {
@@ -64,12 +67,5 @@ class BillingPurchaseActivity : AppCompatActivity() {
         binding.pbLoading.visibility = View.GONE
         purchaseAdapter.items = ArrayList(list)
         purchaseAdapter.notifyDataSetChanged()
-    }
-
-    private val billingListener = ConsumeResponseListener { billingResult, s ->
-        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-            Log.e("[INAPPACT]", "=== ConsumeResponseListener ===")
-            Log.e("[INAPPACT]", "Consume OK")
-        }
     }
 }
