@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import com.android.billingclient.api.*
@@ -19,6 +20,24 @@ class GoogleBillingUtilsDev private constructor(
     val purchaseUpdateEvent = SingleLiveEvent<List<Purchase>>()
     val purchases = MutableLiveData<List<Purchase>>()
     val skusWithSkuDetails = MutableLiveData<Map<String, SkuDetails>>()
+    var isBillingClientConnected = MutableLiveData<Boolean>()
+
+    override fun onBillingSetupFinished(billingResult: BillingResult) {
+        val responseCode = billingResult.responseCode
+        val debugMessage = billingResult.debugMessage
+        Log.e(TAG, "onBillingSetupFinished: $responseCode $debugMessage")
+        if (responseCode == BillingClient.BillingResponseCode.OK) {
+            // The billing client is ready. You can query purchases here.
+                isBillingClientConnected.postValue(true)
+        }
+    }
+
+    override fun onBillingServiceDisconnected() {
+        Log.e(TAG, "onBillingServiceDisconnected")
+        isBillingClientConnected.postValue(false)
+        // TODO: Try connecting again with exponential backoff.
+        // billingClient.startConnection(this)
+    }
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
         val responseCode = billingResult.responseCode
@@ -48,23 +67,6 @@ class GoogleBillingUtilsDev private constructor(
                 )
             }
         }
-    }
-
-    override fun onBillingSetupFinished(billingResult: BillingResult) {
-        val responseCode = billingResult.responseCode
-        val debugMessage = billingResult.debugMessage
-        Log.e(TAG, "onBillingSetupFinished: $responseCode $debugMessage")
-        if (responseCode == BillingClient.BillingResponseCode.OK) {
-            // The billing client is ready. You can query purchases here.
-//            querySkuDetails()
-            queryPurchases()
-        }
-    }
-
-    override fun onBillingServiceDisconnected() {
-        Log.e(TAG, "onBillingServiceDisconnected")
-        // TODO: Try connecting again with exponential backoff.
-        // billingClient.startConnection(this)
     }
 
     override fun onSkuDetailsResponse(billingResult: BillingResult, skuDetailsList: MutableList<SkuDetails>?) {

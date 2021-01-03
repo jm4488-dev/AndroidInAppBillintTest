@@ -72,6 +72,9 @@ class MainActivity : AppCompatActivity() {
         binding.btnGoSubscribeProduct.setOnClickListener {
             startActivity(Intent(baseContext, BillingSubscribeActivity::class.java))
         }
+
+        binding.btnLogout.setOnClickListener {
+        }
     }
 
     private fun makeAlreadyPurchasedList(purchasedItems: List<Purchase>) {

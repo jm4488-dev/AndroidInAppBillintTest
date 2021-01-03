@@ -63,6 +63,9 @@ class GoogleBillingUtils  private constructor(
         return false
     }
 
+    /**
+     * called after billingClient.startConnection()
+     */
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
@@ -72,10 +75,20 @@ class GoogleBillingUtils  private constructor(
         }
     }
 
+    /**
+     * called when billingClient is disconnected
+     */
     override fun onBillingServiceDisconnected() {
         Log.e(TAG, "onBillingServiceDisconnected")
+        if (!billingClient.isReady) {
+            initBillintClient()
+        }
     }
 
+    /**
+     * called after billingClient.querySkuDetailsAsync()
+     * 구글 콘솔에 등록된 상품 목록이 호출된 후 결과이 전달되는 곳
+     */
     override fun onSkuDetailsResponse(billingResult: BillingResult, mutableList: MutableList<SkuDetails>?) {
         Log.e(TAG, "=== onSkuDetailsResponse ===")
         Log.e(TAG, "result code : ${billingResult.responseCode}")
@@ -89,6 +102,14 @@ class GoogleBillingUtils  private constructor(
         }
     }
 
+    /**
+     * called after billingClient.launchBillingFlow()
+     * 인앱 구매 확인창 종료 후 호출됨
+     * 여기서 결제를 대기 시키고 백엔드 서버에서 검증 후
+     * 상품 종류에 따라 구매 확정 진행
+     * 1. acknowledgePurchasePurchaseItem - 비소모성 상품일 경우 (구독 또는 일회용)
+     * 2. consumePurchasePurchaseItem - 소모성 상품일 경우 (여러번 구매 가능한 상품)
+     */
     override fun onPurchasesUpdated(billingResult: BillingResult, mutableList: MutableList<Purchase>?) {
         Log.e(TAG, "=== onPurchasesUpdated ===")
         Log.e(TAG, "result code : ${billingResult.responseCode}")
