@@ -40,10 +40,10 @@ class BillingPurchaseActivity : AppCompatActivity() {
             makeList(it)
         })
 
-        binding.pbLoading.visibility = View.VISIBLE
+        binding.groupLoading.visibility = View.VISIBLE
         Handler().postDelayed({
             billingUtils.querySkuDetails(BillingClient.SkuType.INAPP, Constants.INAPP_PRODUCT_IDS)
-        }, 1000)
+        }, 500)
     }
 
     private fun init() {
@@ -64,7 +64,7 @@ class BillingPurchaseActivity : AppCompatActivity() {
 
     private fun makeList(list: List<SkuDetails>) {
         Log.e("[INAPPACT]", "=== makeList ===")
-        binding.pbLoading.visibility = View.GONE
+        binding.groupLoading.visibility = View.GONE
         purchaseAdapter.items = ArrayList(list)
         purchaseAdapter.notifyDataSetChanged()
     }

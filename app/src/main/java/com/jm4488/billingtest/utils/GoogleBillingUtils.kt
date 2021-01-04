@@ -21,6 +21,9 @@ class GoogleBillingUtils  private constructor(
     val alreadyPurchasedLiveData = MutableLiveData<ArrayList<Purchase>>()
     val productSkuDetailsLiveData = MutableLiveData<List<SkuDetails>>()
 
+    val consumeCompleteLiveData = MutableLiveData<Purchase>()
+    val acknowledgeCompleteLiveData = MutableLiveData<Purchase>()
+
     companion object {
         private const val TAG = "[GoogleBillingUtils]"
 
@@ -242,6 +245,10 @@ class GoogleBillingUtils  private constructor(
             val responseCode = billingResult.responseCode
             val debugMessage = billingResult.debugMessage
             Log.e(TAG, "acknowledgePurchase: $responseCode $debugMessage")
+
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                acknowledgeCompleteLiveData.postValue(item)
+            }
         }
     }
 
@@ -257,6 +264,7 @@ class GoogleBillingUtils  private constructor(
             Log.e(TAG, "consumePurchase: $responseCode $debugMessage / $outToken")
 
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                consumeCompleteLiveData.postValue(item)
             }
         }
     }

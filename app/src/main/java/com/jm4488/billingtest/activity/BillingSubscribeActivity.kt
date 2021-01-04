@@ -40,10 +40,10 @@ class BillingSubscribeActivity : AppCompatActivity() {
             makeList(it)
         })
 
-        binding.pbLoading.visibility = View.VISIBLE
+        binding.groupLoading.visibility = View.VISIBLE
         Handler().postDelayed({
             billingUtils.querySkuDetails(BillingClient.SkuType.SUBS, Constants.SUBS_PRODUCT_IDS)
-        }, 1000)
+        }, 500)
     }
 
     private fun init() {
@@ -64,7 +64,7 @@ class BillingSubscribeActivity : AppCompatActivity() {
 
     private fun makeList(list: List<SkuDetails>) {
         Log.e("[SUBSACT]", "=== makeList ===")
-        binding.pbLoading.visibility = View.GONE
+        binding.groupLoading.visibility = View.GONE
         subscribeAdapter.items = ArrayList(list)
         subscribeAdapter.notifyDataSetChanged()
     }

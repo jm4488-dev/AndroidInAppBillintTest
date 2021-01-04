@@ -39,4 +39,22 @@ class PurchasedItemAdapter() : RecyclerView.Adapter<BillingItemViewHolder>() {
     fun setUtil(utils: GoogleBillingUtils) {
         billingUtils = utils
     }
+
+    fun updateConsumedItem(item: Purchase) {
+        items.remove(item)
+        notifyDataSetChanged()
+    }
+
+    fun updateAcknowledgedItem(view: BillingItemViewHolder) {
+        view.itemView.btn_confirm.visibility = View.GONE
+    }
+
+    fun getPosition(item: Purchase): Int {
+        for (index in 0 until items.size) {
+            if (items[index] == item) {
+                return index
+            }
+        }
+        return -1
+    }
 }

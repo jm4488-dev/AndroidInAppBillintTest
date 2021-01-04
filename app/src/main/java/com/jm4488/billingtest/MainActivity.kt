@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.billingclient.api.*
 import com.jm4488.billingtest.activity.BillingPurchaseActivity
 import com.jm4488.billingtest.activity.BillingSubscribeActivity
+import com.jm4488.billingtest.adapter.BillingItemViewHolder
 import com.jm4488.billingtest.adapter.PurchasedItemAdapter
 import com.jm4488.billingtest.billing.BillingViewModel
 import com.jm4488.billingtest.utils.GoogleBillingUtils
@@ -46,10 +47,28 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        binding.pbLoading.visibility = View.VISIBLE
+        billingUtils.consumeCompleteLiveData.observe(this, Observer { consumedItem ->
+            consumedItem?.let { item ->
+                purchasedAdapter.updateConsumedItem(item)
+            }
+        })
+
+        billingUtils.acknowledgeCompleteLiveData.observe(this, Observer { acknowledgedItem ->
+            acknowledgedItem?.let { item ->
+                val position = purchasedAdapter.getPosition(item)
+                if (position != -1) {
+                    val view = binding.rvProductList.findViewHolderForAdapterPosition(position)
+                    view?.let {
+                        purchasedAdapter.updateAcknowledgedItem(it as BillingItemViewHolder)
+                    }
+                }
+            }
+        })
+
+        binding.groupLoading.visibility = View.VISIBLE
         Handler().postDelayed({
             billingUtils.queryAlreadyPurchases()
-        }, 1000)
+        }, 500)
     }
 
     private fun init() {
@@ -85,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeAlreadyPurchasedList(purchasedItems: List<Purchase>) {
         Log.e("[MAINACT]", "=== makeAlreadyPurchasedList ===")
-        binding.pbLoading.visibility = View.GONE
+        binding.groupLoading.visibility = View.GONE
         purchasedAdapter.items.clear()
         purchasedAdapter.items = ArrayList(purchasedItems)
 //        purchasedAdapter.items = ArrayList(emptyList())
