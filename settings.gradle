@@ -1,2 +1,3 @@
+include ':RetrofitService'
 include ':app'
 rootProject.name = "BillingTest"

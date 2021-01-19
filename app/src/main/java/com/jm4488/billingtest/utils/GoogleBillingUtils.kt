@@ -5,8 +5,15 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.android.billingclient.api.*
+import com.jm4488.billingtest.billing.InAppBillingModel
 import com.jm4488.billingtest.data.Constants
+import com.jm4488.billingtest.network.NetworkParam
+import com.jm4488.billingtest.network.WavveServer
+import com.jm4488.retrofitservice.RestfulService
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class GoogleBillingUtils  private constructor(
@@ -106,15 +113,34 @@ class GoogleBillingUtils  private constructor(
      * 인앱 구매 확인창 종료 후 호출됨
      * 여기서 결제를 대기 시키고 백엔드 서버에서 검증 후
      * 상품 종류에 따라 구매 확정 진행
-     * 1. acknowledgePurchasePurchaseItem - 비소모성 상품일 경우 (구독 또는 일회용)
-     * 2. consumePurchasePurchaseItem - 소모성 상품일 경우 (여러번 구매 가능한 상품)
+     * 1. acknowledgePurchaseItem - 비소모성 상품일 경우 (구독 또는 일회용)
+     * 2. consumePurchaseItem - 소모성 상품일 경우 (여러번 구매 가능한 상품)
      */
     override fun onPurchasesUpdated(billingResult: BillingResult, mutableList: MutableList<Purchase>?) {
         Log.e(TAG, "=== onPurchasesUpdated ===")
         Log.e(TAG, "result code : ${billingResult.responseCode}")
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+            val paramMap = NetworkParam.Builder().build().getNetworkParamsMap()
+            val wavveApi: WavveServer = RestfulService.getInstance().getApiInstance(paramMap, WavveServer::class.java)
+
             mutableList?.let {
                 Log.e(TAG, "mutableList size : ${it.size}")
+                for (item in mutableList) {
+                    Log.e(TAG, "item : ${item.toString()}")
+                    val purchaseJson = JSONObject(item.originalJson)
+                    Log.e(TAG, "item purchaseJson : ${purchaseJson.toString()}")
+
+                    val service: Call<InAppBillingModel> = wavveApi.checkReceipt(item.packageName, purchaseJson.getString("productId"), item.purchaseToken)
+                    service.enqueue(object : Callback<InAppBillingModel?> {
+                        override fun onResponse(call: Call<InAppBillingModel?>, response: Response<InAppBillingModel?>) {
+                            Log.e("[Network]", "onResponse : $response")
+                        }
+
+                        override fun onFailure(call: Call<InAppBillingModel?>, t: Throwable) {
+                            Log.e("[Network]", "onFailure : ${t.localizedMessage}")
+                        }
+                    })
+                }
                 purchaseUpdateLiveData.postValue(mutableList)
 //                handlePurchaseItems(mutableList)
             } ?: purchaseUpdateLiveData.postValue(emptyList())
@@ -226,18 +252,18 @@ class GoogleBillingUtils  private constructor(
     fun doConsumeOrAcknowledgePurchaseItem(item: Purchase) {
         when (item.sku) {
             in Constants.INAPP_PRODUCT_IDS -> {
-                    consumePurchasePurchaseItem(item)
+                    consumePurchaseItem(item)
             }
             in Constants.SUBS_PRODUCT_IDS -> {
-                    acknowledgePurchasePurchaseItem(item)
+                    acknowledgePurchaseItem(item)
             }
             else -> {}
         }
     }
 
     // 비소비성 상품 청구 확인(구매확정) - 중복구매 불가
-    fun acknowledgePurchasePurchaseItem(item: Purchase) {
-        Log.e(TAG, "acknowledgePurchasePurchaseItem / ${item.purchaseToken}")
+    fun acknowledgePurchaseItem(item: Purchase) {
+        Log.e(TAG, "acknowledgePurchaseItem / ${item.purchaseToken}")
         val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
                 .setPurchaseToken(item.purchaseToken)
                 .build()
@@ -253,8 +279,8 @@ class GoogleBillingUtils  private constructor(
     }
 
     // 소비성 상품 청구 확인(구매확정) - 중복구매 가능
-    fun consumePurchasePurchaseItem(item: Purchase) {
-        Log.e(TAG, "consumePurchasePurchaseItem / ${item.purchaseToken}")
+    fun consumePurchaseItem(item: Purchase) {
+        Log.e(TAG, "consumePurchaseItem / ${item.purchaseToken}")
         val consumeParams = ConsumeParams.newBuilder()
                         .setPurchaseToken(item.purchaseToken)
                         .build()

@@ -3,6 +3,11 @@ buildscript {
     ext.kotlin_version = "1.3.72"
     ext.billing_version = "3.0.0"
     ext.archLifecycleVersion = "1.1.1"
+    ext.retrofitVersion = '2.5.0'
+    ext.retrofitSubVersion = '2.3.0'
+    ext.okhttpVersion = '3.12.1'
+    ext.loggingInterceptorVersion = '3.4.1'
+
     repositories {
         google()
         jcenter()
