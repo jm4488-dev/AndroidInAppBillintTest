@@ -1,6 +1,7 @@
 package com.jm4488.billingtest.network
 
 import com.jm4488.billingtest.billing.InAppBillingModel
+import com.jm4488.billingtest.coverpage.ResponseCoverPage
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -22,12 +23,10 @@ interface WavveServer {
     // &iaptype=purchase
 
     // packageName, productId, purchaseToken
+    @Headers("Content-Type:application/json")
     @POST("purchase/iap/google")
-    @FormUrlEncoded
     fun checkReceipt(
-        @Field("packageName") packageName: String,
-        @Field("productId") productId: String,
-        @Field("purchaseToken") purchaseToken: String
+        @Body body: String
     ): Call<InAppBillingModel>
 
 //    @PUT("user/basic")
@@ -37,4 +36,11 @@ interface WavveServer {
 //                        @Query("one_line") one_line : String?
 //    ): Call<DataModel.PutResponse>
 
+
+    //
+    @GET
+    open fun requestCoverPage(
+        @Url json: String,
+        @Query("timestamp") timestamp: String
+    ): Call<ResponseCoverPage>
 }

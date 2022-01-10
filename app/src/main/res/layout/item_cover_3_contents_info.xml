@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.jm4488.billingtest.coverpage.CoverPageModel.Contents" />
+
+        <variable
+            name="viewModel"
+            type="com.jm4488.billingtest.coverpage.CoverPageViewModel" />
+
+        <import type="android.text.TextUtils" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_cover_json_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        tools:background="@color/dp_surface_6"
+        app:layout_constraintStart_toStartOf="@+id/parent"
+        app:layout_constraintEnd_toEndOf="@+id/parent"
+        >
+
+        <TextView
+            android:id="@+id/tv_contents_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="31dp"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:text="@{TextUtils.equals(model.content_type.toUpperCase(), @string/vod) ? model.detail_text.programTitle : model.detail_text.title}"
+            tools:text="title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_triangle_arrow"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="28dp"
+            android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_contents_episode_or_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="31dp"
+            android:textStyle="normal"
+            android:textSize="8dp"
+            android:textColor="#a5a5a5"
+            android:text="@{TextUtils.equals(model.content_type.toUpperCase(), @string/vod) ? model.detail_text.getEpisodeStr() : model.detail_text.getRatingStr()}"
+            tools:text="episode or rating"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_contents_title"
+            />
+
+        <ImageView
+            android:id="@+id/iv_dot1"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/ic_dot_line"
+            app:layout_constraintStart_toEndOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating"/>
+
+        <TextView
+            android:id="@+id/tv_contents_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:textStyle="normal"
+            android:textSize="8dp"
+            android:textColor="#a5a5a5"
+            android:text="@{model.detail_text.getCombineDateWeek()}"
+            tools:text="date"
+            visibleGone="@{model.detail_text.isDateWeekVisible(model.detail_text.getCombineDateWeek())}"
+            app:layout_constraintStart_toEndOf="@id/iv_dot1"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating" />
+
+        <ImageView
+            android:id="@+id/iv_dot3"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/ic_dot_line"
+            visibleGone="@{model.detail_text.isDateWeekVisible(model.detail_text.getCombineDateWeek())}"
+            app:layout_constraintStart_toEndOf="@id/tv_contents_date"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating"/>
+
+        <TextView
+            android:id="@+id/tv_contents_genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:textStyle="normal"
+            android:textSize="8dp"
+            android:textColor="#a5a5a5"
+            android:text="@{model.detail_text.genreText}"
+            tools:text="genre"
+            app:layout_constraintStart_toEndOf="@id/iv_dot3"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating" />
+
+        <ImageView
+            android:id="@+id/iv_dot4"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/ic_dot_line"
+            app:layout_constraintStart_toEndOf="@id/tv_contents_genre"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating"/>
+
+        <TextView
+            android:id="@+id/tv_contents_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:textStyle="normal"
+            android:textSize="8dp"
+            android:textColor="#a5a5a5"
+            android:text="@{model.detail_text.playtimetext}"
+            tools:text="length"
+            app:layout_constraintStart_toEndOf="@id/iv_dot4"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating" />
+
+        <ImageView
+            android:id="@+id/iv_dot5"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/ic_dot_line"
+            app:layout_constraintStart_toEndOf="@id/tv_contents_length"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating"/>
+
+        <TextView
+            android:id="@+id/tv_contents_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:textStyle="normal"
+            android:textSize="8dp"
+            android:textColor="#a5a5a5"
+            android:text="@{model.detail_text.getAgeStr()}"
+            tools:text="age"
+            app:layout_constraintStart_toEndOf="@id/iv_dot5"
+            app:layout_constraintTop_toTopOf="@id/tv_contents_episode_or_rating"
+            app:layout_constraintBottom_toBottomOf="@id/tv_contents_episode_or_rating" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

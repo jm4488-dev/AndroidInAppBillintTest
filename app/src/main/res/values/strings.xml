@@ -1,4 +1,5 @@
 <resources>
+    <string name="str_log_in">로그인</string>
     <string name="app_name">BillingTest</string>
     <string name="refresh_list">새로고침</string>
 
@@ -12,4 +13,5 @@
     <string name="billing_cancel_subscripbe">구독 취소</string>
     <string name="billing_recover_subscripbe">구독 복원</string>
     <string name="billing_product_list">상품 목록</string>
+
 </resources>

@@ -7,14 +7,15 @@ class NetworkParam {
         val baseUrl = "https://apis-sg.wavve.com/"
     }
 
-    val CREDENTIAL = "credential"
-    val DEVICE = "device"
-    val PARTNER = "partner"
-    val POOQZONE = "pooqzone"
-    val REGION = "region"
-    val DRM = "drm"
-    val TARGETAGE = "targetage"
-    val IAPTYPE = "iaptype"
+    val KEY_APIKEY = "apikey"
+    val KEY_CREDENTIAL = "credential"
+    val KEY_DEVICE = "device"
+    val KEY_PARTNER = "partner"
+    val KEY_POOQZONE = "pooqzone"
+    val KEY_REGION = "region"
+    val KEY_DRM = "drm"
+    val KEY_TARGETAGE = "targetage"
+    val KEY_IAPTYPE = "iaptype"
 
     var credentialValue = "XRIextSiEr2lGvdexpQ88Xx0AzZMIiav%2BnGY6Wr0qbmuW9jIY%2ByGpQBWoexLBkFcn4uwKWovLFqtaz1%2FtczJxZqpaDHLUasE3cRhni7l8u11b2DsVhnVZf6qytMDOdAmoiIiqNE8XnGeFw8NrVKngpImHkNy776RACBLvP2oELvRjsgUVvo%2BJ%2FsnpqU8Tmnze6c45lKS4DsUDSxTcpEB79FfR0AyeYwXJzj3As7FxIIsLxxuIVtCynLk%2F%2FNLWYz5"
     var deviceValue = "android"
@@ -38,14 +39,15 @@ class NetworkParam {
 
     fun getNetworkParamsMap(): HashMap<String, String> {
         return HashMap<String, String>().apply {
-            put(CREDENTIAL, credentialValue)
-            put(DEVICE, deviceValue)
-            put(PARTNER, partnerValue)
-            put(POOQZONE, pooqzoneValue)
-            put(REGION, regionValue)
-            put(DRM, drmValue)
-            put(TARGETAGE, targetAgeValue)
-            put(IAPTYPE, iapTypeValue)
+            put(KEY_APIKEY, APIKEY)
+            put(KEY_CREDENTIAL, credentialValue)
+            put(KEY_DEVICE, deviceValue)
+            put(KEY_PARTNER, partnerValue)
+            put(KEY_POOQZONE, pooqzoneValue)
+            put(KEY_REGION, regionValue)
+            put(KEY_DRM, drmValue)
+            put(KEY_TARGETAGE, targetAgeValue)
+            put(KEY_IAPTYPE, iapTypeValue)
         }
     }
 

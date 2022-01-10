@@ -3,6 +3,7 @@ package com.jm4488.billingtest.utils
 import android.app.Activity
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.android.billingclient.api.*
 import com.jm4488.billingtest.billing.InAppBillingModel
@@ -129,11 +130,18 @@ class GoogleBillingUtils  private constructor(
                     Log.e(TAG, "item : ${item.toString()}")
                     val purchaseJson = JSONObject(item.originalJson)
                     Log.e(TAG, "item purchaseJson : ${purchaseJson.toString()}")
+                    Log.e(TAG, "onPurchasesUpdated developerPayload : ${item.developerPayload}")
 
-                    val service: Call<InAppBillingModel> = wavveApi.checkReceipt(item.packageName, purchaseJson.getString("productId"), item.purchaseToken)
+                    val jsonObj = JSONObject()
+                    jsonObj.put("packageName", item.packageName)
+                    jsonObj.put("productId", purchaseJson.getString("productId"))
+                    jsonObj.put("purchaseToken", item.purchaseToken)
+
+                    val service: Call<InAppBillingModel> = wavveApi.checkReceipt(jsonObj.toString())
                     service.enqueue(object : Callback<InAppBillingModel?> {
                         override fun onResponse(call: Call<InAppBillingModel?>, response: Response<InAppBillingModel?>) {
                             Log.e("[Network]", "onResponse : $response")
+                            Toast.makeText(app.applicationContext, "- REQUEST : ${response.raw().request().url()}\n- RESPONSE : ${response.raw()}", Toast.LENGTH_LONG).show()
                         }
 
                         override fun onFailure(call: Call<InAppBillingModel?>, t: Throwable) {
@@ -232,6 +240,7 @@ class GoogleBillingUtils  private constructor(
         Log.e(TAG, "isPurchasePending states / UNSPECIFIED_STATE: ${Purchase.PurchaseState.UNSPECIFIED_STATE} / PURCHASED: ${Purchase.PurchaseState.PURCHASED} / PENDING: ${Purchase.PurchaseState.PENDING}")
         Log.e(TAG, "isPurchasePending purchaseStateInJson : $purchaseStateInJson")
         Log.e(TAG, "isPurchasePending test : ${purchaseStateInJson == Purchase.PurchaseState.PURCHASED}")
+        Log.e(TAG, "isPurchasePending developerPayload : ${item.developerPayload}")
         Log.e(TAG, "=====================================================")
 
         return if (item.isAcknowledged) {

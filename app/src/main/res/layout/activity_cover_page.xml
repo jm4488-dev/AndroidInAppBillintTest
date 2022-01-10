@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto" >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jm4488.billingtest.coverpage.CoverPageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#101010" >
+
+        <ScrollView
+            android:id="@+id/scroll_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                >
+
+                <TextView
+                    android:id="@+id/tv_first_page_main_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="32dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="12dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.titleText}"
+                    tools:text="FIRST PAGE\nTITLE TEXT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_first_page_sub_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:text="@{viewModel.subTitleText}"
+                    tools:text="FIRST PAGE\nSUB TITLE TEXT"
+                    android:textStyle="normal"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_first_page_main_title"
+                    />
+
+                <Button
+                    android:id="@+id/btn_cover_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:text="@{viewModel.coverJsonData.button1_text}"
+                    android:textColor="@color/white"
+                    tools:text="ACTION BUTTON"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_rounded_1351f9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_first_page_sub_title"
+                    />
+
+                <com.jm4488.billingtest.coverpage.AutoScrollRecyclerView
+                    android:id="@+id/as_recycle_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="40dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_cover_action_button" />
+
+                <View
+                    android:id="@+id/view_first_page_end_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/as_recycle_view" />
+
+                <TextView
+                    android:id="@+id/tv_second_page_main_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="32dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="12dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.secondPageMainText}"
+                    tools:text="SECOND PAGE\nTITLE TEXT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/as_recycle_view"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_second_page_sub_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.secondPageSubText}"
+                    tools:text="SECOND PAGE\nSUB TITLE TEXT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_second_page_main_txt"
+                    />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_second_page_promotion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:visibility="invisible"
+                    tools:visibility="gone"
+                    app:lottie_autoPlay="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_second_page_sub_txt" />
+
+                <ImageView
+                    android:id="@+id/iv_second_page_first_circle"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/promotion_img_1_month"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lottie_second_page_promotion" />
+
+                <ImageView
+                    android:id="@+id/iv_second_page_second_circle"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="102dp"
+                    android:src="@drawable/promotion_img_2_month"
+                    android:background="#101010"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_second_page_first_circle" />
+
+                <ImageView
+                    android:id="@+id/iv_second_page_third_circle"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="102dp"
+                    android:src="@drawable/promotion_img_3_month"
+                    android:background="#101010"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_second_page_second_circle" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_promotion_circles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    app:constraint_referenced_ids="iv_second_page_first_circle, iv_second_page_second_circle, iv_second_page_third_circle" />
+
+                <TextView
+                    android:id="@+id/tv_second_page_unregist_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="12dp"
+                    android:textColor="#ffffff"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.secondPageUnRegistText}"
+                    tools:text="SECOND PAGE\nBOTTOM TEXT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_second_page_third_circle"
+                    />
+
+                <View
+                    android:id="@+id/view_second_page_end_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="200dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_second_page_sub_txt" />
+
+                <TextView
+                    android:id="@+id/tv_third_page_main_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="32dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="12dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.thirdPageMainText}"
+                    tools:text="THIRD PAGE\nTITLE TEXT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_second_page_unregist_txt"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_third_page_sub_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.thirdPageSubText}"
+                    tools:text="THIRD PAGE\nSUB TITLE TEXT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_third_page_main_txt"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_third_page_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="64dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:src="@drawable/contents_img_device"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_third_page_sub_txt"
+                    />
+
+                <com.jm4488.billingtest.coverpage.AutoScrollRecyclerView
+                    android:id="@+id/rv_third_page_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:overScrollMode="never"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_third_page_bg" />
+
+                <include
+                    android:id="@+id/view_pager_item_info"
+                    layout="@layout/item_cover_3_contents_info"
+                    bind:model="@{viewModel.cover3ViewPagerItemInfo}"
+                    bind:viewModel="@{viewModel}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@+id/iv_third_page_bg"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_third_page_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_third_page_images"
+                    />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_third_page_genre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="62dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:tabMode="fixed"
+                    app:tabTextColor="@color/white"
+                    app:tabIndicatorColor="@color/white"
+                    app:tabGravity="center"
+                    app:layout_constraintStart_toStartOf="@+id/rv_third_page_images"
+                    app:layout_constraintEnd_toEndOf="@+id/rv_third_page_images"
+                    app:layout_constraintTop_toBottomOf="@+id/view_pager_item_info"
+                    />
+
+                <View
+                    android:id="@+id/view_third_page_end_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="200dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_third_page_sub_txt" />
+
+                <TextView
+                    android:id="@+id/tv_fourth_page_main_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="101dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="32dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="12dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.fourthPageMainText}"
+                    tools:text="세상에서 가장 빠른\n다시보기"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_third_page_bg"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_fourth_page_sub_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    android:textStyle="normal"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:lineSpacingExtra="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.fourthPageSubText}"
+                    tools:text="Quick VOD로 본방 시작 5분 만에\n내 시간에 맞춰 On-Air"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_fourth_page_main_txt"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_fourth_page_quickvod_bg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/quick_vod_background"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="127dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_fourth_page_sub_txt"
+                    />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_fourth_page_time_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:lottie_fileName="lottie_cover_4_numbercounter.json"
+                    app:lottie_autoPlay="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_fourth_page_quickvod_bg" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_fourth_page_tvmobile_transition"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:lottie_fileName="lottie_cover_4_tvmobile_transition.json"
+                    app:lottie_autoPlay="false"
+                    app:lottie_imageAssetsFolder="lottie_cover_4_tvmobile_transition"
+                    app:lottie_progress="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_fourth_page_quickvod_bg" />
+
+                <Space
+                    android:id="@+id/space_fourth_page_tag_margin"
+                    android:layout_width="298dp"
+                    android:layout_height="144dp"
+                    android:layout_marginTop="94dp"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_fourth_page_sub_txt"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_fourth_page_quickvod_tag"
+                    android:layout_width="100dp"
+                    android:layout_height="29dp"
+                    android:layout_marginTop="36dp"
+                    android:background="@drawable/ic_tagcode_quickvod"
+                    app:sizeWidth="@{100}"
+                    app:sizeHeight="@{29}"
+                    app:imageUrl="@{viewModel.coverJsonData.quickvod_icon_image_url}"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="@+id/lottie_fourth_page_tvmobile_transition"
+                    app:layout_constraintTop_toTopOf="@+id/lottie_fourth_page_time_counter"
+                    tools:visibility="visible" />
+
+                <View
+                    android:id="@+id/view_fourth_page_end_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="200dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_fourth_page_sub_txt" />
+
+                <TextView
+                    android:id="@+id/tv_personal_privacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="112dp"
+                    android:text="@string/cover_page_bottom_privacy_statement"
+                    android:textSize="12dp"
+                    android:textColor="#a5a5a5"
+                    android:lineSpacingExtra="8dp"
+                    android:gravity="center_horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_fourth_page_quickvod_bg"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <View
+            android:id="@+id/view_top_area"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#90101010"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bi_wavve_white"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintStart_toStartOf="@id/view_top_area"
+            app:layout_constraintTop_toTopOf="@id/view_top_area"
+            app:layout_constraintBottom_toBottomOf="@id/view_top_area"
+            />
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/str_log_in"
+            android:textStyle="normal"
+            android:textSize="14dp"
+            android:textColor="#ffffff"
+            android:gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="@id/view_top_area"
+            app:layout_constraintTop_toTopOf="@id/view_top_area"
+            app:layout_constraintBottom_toBottomOf="@id/view_top_area"/>
+
+        <Button
+            android:id="@+id/btn_cover_bottom_action_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="30dp"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            android:text="@{viewModel.coverJsonData.button2_text}"
+            tools:text="ACTION BUTTON"
+            android:textColor="@color/white"
+            android:padding="15dp"
+            android:background="@drawable/bg_rounded_1351f9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
