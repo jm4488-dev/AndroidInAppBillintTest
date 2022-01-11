@@ -6,11 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.jm4488.billingtest.coverpage.CoverPageModel.Contents" />
-
-        <variable
-            name="viewModel"
-            type="com.jm4488.billingtest.coverpage.CoverPageViewModel" />
+            type="com.jm4488.billingtest.data.CoverPageModel.Contents" />
 
         <import type="android.text.TextUtils" />
     </data>

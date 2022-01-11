@@ -8,7 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.billingclient.api.Purchase
@@ -44,7 +44,7 @@ class GoogleBillingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        billingViewModel = ViewModelProviders.of(this).get(BillingViewModel::class.java)
+        billingViewModel = ViewModelProvider(this).get(BillingViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         billingUtils = (application as GlobalApplication).googleBillingUtils
 //        lifecycle.addObserver(billingUtils)

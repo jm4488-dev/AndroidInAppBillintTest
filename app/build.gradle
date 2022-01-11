@@ -7,14 +7,15 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.jm4488.billingtest"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 4
         versionName "1.4"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -58,7 +59,9 @@ dependencies {
     implementation "com.android.billingclient:billing-ktx:$billing_version"
 
     // ViewModel and LiveData extensions.
-    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+//    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
 
     // Java8 support for Lifecycles.
     implementation "android.arch.lifecycle:common-java8:$archLifecycleVersion"
@@ -78,6 +81,14 @@ dependencies {
         exclude module: 'play-services-basement'
         exclude module: 'support-annotations'
     }
+
+    // image loader Glide
+    implementation("com.github.bumptech.glide:glide:4.11.0") {
+        exclude group: "com.android.support"
+    }
+    annotationProcessor "com.github.bumptech.glide:compiler:4.11.0"
+    implementation "com.github.bumptech.glide:annotations:4.11.0"
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,92 @@
+{
+  "cover_page": {
+    "button1_text": "첫달 100원으로 즐기기",
+    "button2_text": "첫달 100원으로 즐기러 가기",
+    "div1_images_count": "6",
+    "div1_images_url": [
+      "https://img.wavve.com/service/coverpage/01MainImgBigbanner01@2x.png",
+      "https://img.wavve.com/service/coverpage/01MainImgBigbanner06@2x.png",
+      "https://img.wavve.com/service/coverpage/01MainImgBigbanner04@2x.png",
+      "https://img.wavve.com/service/coverpage/01MainImgBigbanner05@2x.png",
+      "https://img.wavve.com/service/coverpage/01MainImgBigbanner03@2x.png",
+      "https://img.wavve.com/service/coverpage/01MainImgBigbanner07@2x.png"
+    ],
+    "div3_contents_count": "4",
+    "div3_contents_list_text": [
+      "예능",
+      "드라마",
+      "영화",
+      "해외드라마"
+    ],
+    "div3_contents_define": [
+      {
+        "order_no": "1",
+        "content_type": "vod",
+        "genre_text": "예능",
+        "poster_image_url": "https://img.wavve.com/service/coverpage/03ContentsImgContents01@2x.png",
+        "detail_image_url": "",
+        "detail_text": {
+          "programtitle": "놀면 뭐하니?",
+          "episodenumber": "67",
+          "releasedate": "2020-11-07",
+          "releaseweekday": "토",
+          "genretext": "예능",
+          "playtime": "4208",
+          "playtimetext": "70분",
+          "targetage": "15"
+        }
+      },
+      {
+        "order_no": "2",
+        "content_type": "vod",
+        "genre_text": "드라마",
+        "poster_image_url": "https://img.wavve.com/service/coverpage/03ContentsImgContents02@2x.png",
+        "detail_image_url": "",
+        "detail_text": {
+          "programtitle": "앨리스",
+          "episodenumber": "1",
+          "releasedate": "2020-08-28",
+          "releaseweekday": "금",
+          "genretext": "드라마",
+          "playtime": "4135",
+          "playtimetext": "68분",
+          "targetage": "15"
+        }
+      },
+      {
+        "order_no": "3",
+        "content_type": "movie",
+        "genre_text": "영화",
+        "poster_image_url": "https://img.wavve.com/service/coverpage/03ContentsImgContents03@2x.png",
+        "detail_image_url": "",
+        "detail_text": {
+          "title": "매트릭스",
+          "rating": "9.36",
+          "genretext": "SF/판타지",
+          "playtime": "8178",
+          "playtimetext": "136분",
+          "targetage": "12"
+        }
+      },
+      {
+        "order_no": "4",
+        "content_type": "vod",
+        "genre_text": "해외드라마",
+        "poster_image_url": "https://img.wavve.com/service/coverpage/03ContentsImgContents04@2x.pngg",
+        "detail_image_url": "",
+        "detail_text": {
+          "programtitle": "노멀피플",
+          "episodenumber": "1",
+          "releasedate": "",
+          "releaseweekday": "",
+          "genretext": "해외시리즈",
+          "playtime": "2611",
+          "playtimetext": "43분",
+          "targetage": "19"
+        }
+      }
+    ],
+    "div4_image_url": "",
+    "quickvod_icon_image_url": "https://img.wavve.com/service/coverpage/iconTagDefaulIcTagcodeQuickvod@2x.png"
+  }
+}

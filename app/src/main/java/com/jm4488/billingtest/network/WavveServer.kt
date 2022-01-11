@@ -1,7 +1,7 @@
 package com.jm4488.billingtest.network
 
 import com.jm4488.billingtest.billing.InAppBillingModel
-import com.jm4488.billingtest.coverpage.ResponseCoverPage
+import com.jm4488.billingtest.data.ResponseCoverPage
 import retrofit2.Call
 import retrofit2.http.*
 

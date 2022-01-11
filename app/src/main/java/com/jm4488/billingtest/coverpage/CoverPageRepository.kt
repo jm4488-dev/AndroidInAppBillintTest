@@ -2,12 +2,13 @@ package com.jm4488.billingtest.coverpage
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jm4488.billingtest.billing.InAppBillingModel
+import com.jm4488.billingtest.data.CoverPageModel
+import com.jm4488.billingtest.data.ResponseCoverPage
 import com.jm4488.billingtest.network.NetworkParam
 import com.jm4488.billingtest.network.WavveServer
+import com.jm4488.retrofitservice.ApiCallback
 import com.jm4488.retrofitservice.RestfulService
 import org.json.JSONObject
 import retrofit2.Call
@@ -29,8 +30,7 @@ class CoverPageRepository {
         return Gson().fromJson<CoverPageModel>(jsonObj.getJSONObject("cover_page").toString(), object : TypeToken<CoverPageModel>() {}.type)
     }
 
-    fun requestCoverPageJson(context: Context, callback: ApiCallback<CoverPageModel>) {
-
+    fun requestCoverPageJson(callback: ApiCallback<CoverPageModel>) {
         val paramMap = NetworkParam.Builder().build().getNetworkParamsMap()
         val wavveApi: WavveServer = RestfulService.getInstance().getApiInstance(paramMap, WavveServer::class.java)
         val timeStamp = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Calendar.getInstance().time)
@@ -39,6 +39,19 @@ class CoverPageRepository {
         service.enqueue(object : Callback<ResponseCoverPage?> {
             override fun onResponse(call: Call<ResponseCoverPage?>, response: Response<ResponseCoverPage?>) {
                 Log.e("[Network]", "onResponse : $response")
+                if (!response.isSuccessful) return
+
+                when (val res = response.body()) {
+                    is ResponseCoverPage -> {
+                        if (res.isSuccess) {
+                            val coverPageData = res.coverPage
+                            callback.onSuccess(coverPageData)
+                        } else {
+                            callback.onFailed(res.code, res.msg)
+                        }
+                    }
+                    else -> callback.onFailed(0, "")
+                }
             }
 
             override fun onFailure(call: Call<ResponseCoverPage?>, t: Throwable) {

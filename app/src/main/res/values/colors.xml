@@ -5,8 +5,134 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 
+    <color name="colorPrimary">@color/dp_background</color>
+    <color name="colorPrimaryDark">@color/dp_background</color>
+    <color name="colorAccent">@color/dp_primary</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_dim">#99000000</color>
+    <color name="loading_bg">#01000000</color>
+
+    <!-- player -->
+    <color name="player_button_ripple">#cccccc</color>
+    <color name="gesture_level_color">#425bf2</color>
+
+    <color name="color_f7f7f7">#f7f7f7</color>
+    <color name="color_23212a">#23212a</color>
+    <color name="color_23212a_a10">#1a23212a</color>
+    <color name="color_87d235">#87d235</color>
+    <color name="color_bdbdbd">#bdbdbd</color>
+    <color name="color_777777">#777777</color>
+    <color name="color_b4b4b4">#b4b4b4</color>
+    <color name="color_888888">#888888</color>
+    <color name="color_cccccc">#cccccc</color>
+    <color name="color_f3f3f3">#f3f3f3</color>
+    <color name="color_e5e5e5">#e5e5e5</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_ff3b30">#ff3b30</color>
+    <color name="color_f73e3c">#f73e3c</color>
+    <color name="color_1da7ef">#1da7ef</color>
+    <color name="color_35abfd">#35abfd</color>
+    <color name="color_d9d9d9">#d9d9d9</color>
+    <color name="color_f4f4f4">#f4f4f4</color>
+    <color name="color_e0e0e0">#e0e0e0</color>
+    <color name="color_199a3b">#199a3b</color>
+    <color name="color_1da8ee">#1da8ee</color>
+    <color name="color_1da8ee_a50">#881da8ee</color>
+    <color name="color_ff3c33">#ff3c33</color>
+    <color name="color_ff3c33_a50">#88ff3c33</color>
+    <color name="color_ca262626">#ca262626</color>
+    <color name="color_00b3b4">#00b3b4</color>
+    <color name="color_00b3b4_a50">#8800b3b4</color>
+    <color name="color_d8d8d8">#d8d8d8</color>
+    <color name="color_222222">#222222</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="white_a10">#19ffffff</color>
+    <color name="white_a30">#4dffffff</color>
+    <color name="white_a50">#88ffffff</color>
+    <color name="white_a60">#99ffffff</color>
+    <color name="white_a70">#aaffffff</color>
+    <color name="white_a80">#ccffffff</color>
+    <color name="white_a90">#E6ffffff</color>
+    <color name="black_a10">#19000000</color>
+    <color name="black_a30">#4d000000</color>
+    <color name="black_a40">#66000000</color>
+    <color name="black_a50">#88000000</color>
+    <color name="black_a70">#aa000000</color>
+    <color name="black_a80">#cc000000</color>
+    <color name="black_a85">#d9000000</color>
+    <color name="black_a90">#E6000000</color>
+
+    <color name="chip">#333</color>
+
+    <color name="tag1">#39b766</color>
+    <color name="tag2">#dd0797</color>
+    <color name="tag3">#1da8ee</color>
+    <color name="tag4">#a5a5a5</color>
+
+    <color name="tag_download_movie">#3887ff</color>
+    <color name="tag_download_vod">#f73e3c</color>
+
+    <color name="tag_baseball_reserved">#3787ff</color>
+
+    <color name="shadow">#eeeeee</color>
+
+    <color name="player_tag_39b766">#39b766</color>
+    <color name="player_tag_ef299a">#ef299a</color>
+    <color name="player_tag_1da8ee">#1da8ee</color>
+    <color name="player_tag_525252">#525252</color>
+    <color name="player_tag_a5a5a5">#a5a5a5</color>
+
+    <color name="player_tag_1">#39b766</color>
+    <color name="player_tag_2">#dd0797</color>
+    <color name="player_tag_3">#1da8ee</color>
+    <color name="player_tag_4">#a5a5a5</color>
+
+    <!-- dark theme -->
+    <color name="dp_primary">#1351F9</color>
+    <color name="dp_primary_dimmed">#801351F9</color>
+    <color name="dp_primary_variation">#3887ff</color>
+    <color name="dp_secondary">#00BBEC</color>
+    <color name="dp_secondary_variation">#70DDFF</color>
+
+    <color name="dp_background">#1b1b1b</color>
+    <color name="dp_background_black">#151515</color>
+    <color name="dp_background_gray">#3e3e3e</color>
+
+    <color name="dp_surface">#252525</color>
+    <color name="dp_error">#FF27A3</color>
+    <color name="dp_on_surface">#ffffff</color>
+
+    <color name="dp_progress_basic">#1351F9</color>
+    <color name="dp_progress_quick_vod">#DA1A9B</color>
+    <color name="dp_progress_advertising">#00CCA0</color>
+    <color name="dp_progress_background">#26000000</color>
+
+    <color name="dp_surface_0">#000000</color>
+    <color name="dp_surface_1">#ffffff</color>
+    <color name="dp_surface_2">#a5a5a5</color>
+    <color name="dp_surface_3">#5e5e5e</color>
+    <color name="dp_surface_4">#2f2f2f</color>
+    <color name="dp_surface_5">#252525</color>
     <color name="dp_surface_6">#101010</color>
+    <color name="dp_surface_7">#777777</color>
+    <color name="dp_surface_8">#717171</color>
+
+    <color name="dp_dim_30">#4d000000</color>
+    <color name="dp_dim_80">#cc000000</color>
+
+    <color name="dp_dim2_30">#4d1b1b1b</color>
+    <color name="dp_dim2_80">#cc1b1b1b</color>
+
+    <color name="dp_shadow">#252525</color>
+    <color name="dp_boarder">#26a8a8a8</color>
+
+    <color name="dp_event_tag">#1da8ee</color>
+    <color name="dp_player_detail_bg">#101010</color>
+
+    <color name="color_control_highlight">#22ffffff</color>
+
+    <color name="color_gesture_bar_bg">#4cffffff</color>
 </resources>

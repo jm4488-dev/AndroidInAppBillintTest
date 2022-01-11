@@ -7,10 +7,6 @@
         <variable
             name="imgUrl"
             type="String" />
-
-        <variable
-            name="contents"
-            type="com.jm4488.billingtest.coverpage.CoverPageModel.Contents" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

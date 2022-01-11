@@ -1,27 +1,32 @@
 package com.jm4488.billingtest.coverpage
 
-import android.os.Handler
-import android.os.Looper
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.jm4488.billingtest.databinding.ActivityCoverPageBinding
+import com.jm4488.billingtest.R
 
 class CoverPageActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: CoverPageViewModel
-    private lateinit var binding: ActivityCoverPageBinding
-    private var repository = CoverPageRepository()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_cover_page)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, CoverPageFragment(), "")
+            transaction.commitAllowingStateLoss()
+        } else {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, CoverPageFragment(), "")
+            transaction.commitAllowingStateLoss()
+        }
+    }
 
-    private var secondLineCheck = false
-    private var thirdLineCheck = false
-    private var fourthLineCheck = false
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 
-    private var isBottomButtonVisible = false
-
-    private var isLottiePlayed = false
-    val headerHandler = Handler(Looper.getMainLooper())
-
-    var currentIndexThirdPageItem = 0
-
-    private var mDensity = 0f
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

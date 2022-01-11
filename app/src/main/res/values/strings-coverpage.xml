@@ -2,4 +2,5 @@
 <resources>
     <string name="cover_page_bottom_privacy_statement"><u>개인정보 처리방침</u></string>
 
+    <string name="vod">VOD</string>
 </resources>
